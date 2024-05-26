@@ -16,6 +16,9 @@ export function upload(parsedFile: ParsedBankFile, config: Configuration) {
   // Bail if upload is disabled for this file, or globally
   if (!shouldUpload(uploadFile, uploadGeneral)) return;
 
+  // Do not upload, if there are no transactions to upload
+  if (parsedFile.transactions.length === 0) return;
+
   // Add YNAB-specific props to each transaction
   // This turns a BuddyTransaction into a YNAB.SaveTransaction
   const transactions: YNAB.SaveTransaction[] = parsedFile.transactions.map(
